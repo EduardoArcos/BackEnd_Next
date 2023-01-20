@@ -92,7 +92,7 @@ public class UserServiceImpl implements IUserService {
 	}
 
     @Override
-    public void deleteUser(String username) throws IOException, RequestRelatedException {
+    public void deleteUser(String username) throws RequestRelatedException {
 
         User user = userRepository.findUserByUsername(username);
 

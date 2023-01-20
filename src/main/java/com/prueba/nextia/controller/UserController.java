@@ -8,7 +8,6 @@ import com.prueba.nextia.exception.ExistException;
 import com.prueba.nextia.exception.RequestRelatedException;
 import com.prueba.nextia.service.IUserService;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,6 +15,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(path = { "/user" })
+@CrossOrigin(origins = "*")
 public class UserController {
     
     private IUserService userService;
@@ -37,7 +38,7 @@ public class UserController {
         this.userService = userService;
     }
 
-	// * http://localhost:8081/user/add
+	// * http://localhost:8080/user/add
     @PostMapping("/add")
 	public ResponseEntity<User> addUser(@Valid 
         @RequestParam("email") String email,
@@ -51,7 +52,7 @@ public class UserController {
 	}
     
     
-	// * http://localhost:8081/user/update
+	// * http://localhost:8080/user/update
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(
         @RequestParam("username") String username,
@@ -63,7 +64,7 @@ public class UserController {
         return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
     }
 
-	// * http://localhost:8081/user/list
+	// * http://localhost:8080/user/list
 	@GetMapping("/list")
 	public ResponseEntity<List<User>> getAllUsers() {
 		List<User> users = userService.getUsers();
@@ -71,11 +72,11 @@ public class UserController {
 	}
 
     // * Eliminado de usuario (Muy drastico)
-	// * http://localhost:8081/user/delete/rodrigo.gomez
+	// * http://localhost:8080/user/delete/rodrigo.gomez
 	@DeleteMapping("/delete/{username}")
 	public ResponseEntity<HttpResponse> deleteUser(
         @PathVariable("username") String username
-    ) throws IOException, RequestRelatedException {
+    ) throws RequestRelatedException {
         String USER_DELETED_SUCCESSFULLY = "Usuario se ha eliminado exitosamente.";
 
 		userService.deleteUser(username);

@@ -1,6 +1,7 @@
 package com.prueba.nextia.controller;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,9 +34,9 @@ import com.prueba.nextia.security.jwt.JwtUtils;
 import com.prueba.nextia.security.services.UserDetailsImpl;
 
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
   @Autowired
   AuthenticationManager authenticationManager;
@@ -92,7 +93,8 @@ public class AuthController {
                signUpRequest.getEmail(),
                encoder.encode(signUpRequest.getPassword()));
 
-    Set<String> strRoles = signUpRequest.getRole();
+    Set<String> strRoles = new LinkedHashSet<String>(); 
+    strRoles.add("user");
     Set<Role> roles = new HashSet<>();
 
     String Error_Rol = "Error: El Rol no fue encontrado.";

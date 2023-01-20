@@ -1,6 +1,5 @@
 package com.prueba.nextia.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +20,6 @@ public interface IUserService {
 
     List<User> getUsers();
         
-    void deleteUser(String username) throws IOException, RequestRelatedException;
+    void deleteUser(String username) throws RequestRelatedException;
     
 }
