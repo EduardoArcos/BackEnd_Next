@@ -74,6 +74,49 @@ public class FileServiceImpl implements IFIleService {
     }
 
     @Override
+    public FileData addNewMultiFile(List<String> names, List<MultipartFile> files) throws ExistException, IOException {
+
+        // Validamos que todos los nombres pasados no existan
+        for (final String _name : names) {
+
+            validateName("", _name);
+        }
+
+        //Se crea la carpeta que almacenara el archivo
+		Path folder = Paths.get(getFolder());
+		if (!Files.exists(folder)) {
+			Files.createDirectories(folder);
+		}
+
+        // Hacemos un for para poder crear los archivos y guardarlos en la BD como corresponde.
+        for ( int i = 0; i < files.size(); i++) {
+
+            String nombre = names.get(i).replaceAll("[^\\w+]","");
+
+            // Proceso de creacion del archivo
+            String filename = nombre + "-" + StringUtils.cleanPath(files.get(i).getOriginalFilename());
+            Path fileStorage = get(getFolder(), filename).toAbsolutePath().normalize();
+
+            try {
+                copy(files.get(i).getInputStream(), fileStorage, REPLACE_EXISTING);
+            } catch (Exception e) {
+                throw new IOException("Error al intentar crear el archivo: " + e);
+            }
+
+            FileData newFile = new FileData();
+
+
+            newFile.setName(nombre);
+            newFile.setUrl(fileStorage.toString());
+
+            fileRepository.save(newFile);
+        }
+        FileData newFile = new FileData();
+
+        return newFile;
+    }
+
+    @Override
     public FileData updateFileName(String oldName, String newName) throws ExistException {
         
         FileData currentFile = validateName(oldName, newName);

@@ -21,4 +21,5 @@ public interface IFIleService {
 
     void deleteFile(String name) throws FileNotFoundException, IOException;
 
+    FileData addNewMultiFile( List<String> names, List<MultipartFile> files ) throws ExistException, IOException;
 }

@@ -47,6 +47,18 @@ public class FileController {
         
         return new ResponseEntity<FileData>(newUser, HttpStatus.OK);
     }
+    
+    // * http://localhost:8080/file/add-file-multiple
+    @PostMapping("/add-file-multiple")
+    public ResponseEntity<FileData> addFileMultiple(@Valid 
+        @RequestParam("name") List<String> name,
+        @RequestParam("file") List<MultipartFile> file
+        ) throws ExistException, IOException {
+
+            FileData newMultiFile = fileService.addNewMultiFile( name, file );
+        
+        return new ResponseEntity<FileData>(newMultiFile, HttpStatus.OK);
+    }
 
     // * http://localhost:8080/file/update
     @PutMapping("/update")
